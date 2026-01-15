@@ -1,0 +1,43 @@
+{
+    "languages": [
+        {
+            "code": "en",
+            "name": "English"
+        },
+        {
+            "code": "zh-TW",
+            "name": "繁體中文"
+        },
+        {
+            "code": "zh-CN",
+            "name": "简体中文"
+        }
+    ],
+    "app_name": "Fly Rust",
+    "labels": {
+        "dashboard": "Time: {time}\nScore: {score}",
+        "start": "Start",
+        "pause": "Pause",
+        "stop": "Stop",
+        "difficulty": "Difficulty"
+    },
+    "difficulty": {
+        "easy": "⭐",
+        "medium": "⭐⭐",
+        "hard": "⭐⭐⭐"
+    },
+    "popup": {
+        "game_over": "Game Over",
+        "ok": "OK"
+    },
+    "gameover": {
+        "title": "Game Over",
+        "ok": "OK",
+        "error": "BAD! YOU GOT NOTHING!",
+        "warning": "OOPS, you got ONLY 1.",
+        "info": "You got {score} Rustaceans.",
+        "close_title": "ByeBye",
+        "close_ok": "ByeBye",
+        "close_bye": "Have a good day.\nSee you soon."
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "languages": [
+        {
+            "code": "en",
+            "name": "English"
+        },
+        {
+            "code": "zh-TW",
+            "name": "繁體中文"
+        },
+        {
+            "code": "zh-CN",
+            "name": "简体中文"
+        }
+    ],
+    "app_name": "飞行螃蟹 Rust",
+    "labels": {
+        "dashboard": "时间: {time}\n分数: {score}",
+        "start": "开始",
+        "pause": "暂停",
+        "stop": "停止",
+        "difficulty": "难度"
+    },
+    "difficulty": {
+        "easy": "⭐",
+        "medium": "⭐⭐",
+        "hard": "⭐⭐⭐"
+    },
+    "popup": {
+        "game_over": "游戏结束",
+        "ok": "确定"
+    },
+    "gameover": {
+        "title": "游戏结束",
+        "ok": "确定",
+        "error": "糟糕！你没有抓到！",
+        "warning": "可惜了，你只抓到 1 只。",
+        "info": "你抓到了 {score} 只。",
+        "close_title": "再见",
+        "close_ok": "再见",
+        "close_bye": "期待很快再见到你"
+    }
+}

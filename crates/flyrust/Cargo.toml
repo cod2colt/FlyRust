@@ -1,0 +1,12 @@
+[package]
+name = "flyrust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eframe = { version = "0.33.3", features = ["default","__screenshot"]}
+egui_extras = { version = "0.33.3", features = ["default","all_loaders",
+        "image"]}
+image = { version = "0.25.9", features = ["png", "jpeg"] }
+util = { path = "../util" }
+engin = { path = "../engin" }
