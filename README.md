@@ -7,8 +7,13 @@ The idea is to learn Rust by building and flying with it, hence the name Fly Rus
 
 - This project is designed with a strong focus on architecture, correctness, and scalability, rather than being just a simple demo.
 
-- Demo Video and Screenshot  
-To be added...
+- Demo Video and Screenshot
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=xpFIM6W35uQ">
+    <br>▶️ Watch Demo on YouTube</br>
+    <img src="./assets/screenshots/demo.png" width="320" />
+  </a>
+</p>
 
 ## Goals
 
