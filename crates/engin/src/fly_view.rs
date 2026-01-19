@@ -9,8 +9,8 @@ use crate::config::{Difficulty, IconType, Popup, WorldConfig};
 use crate::fly_viewmodel::FlyViewModel;
 
 use util::assets::{I18NUIJSON, I18NUIZHCNJSON, I18NUIZHTWJSON, LanguageItem, MyAssets, UiConfig};
-use util::get_resource_path_str;
 use util::setup_custom_fonts;
+use util::{MyScore, get_resource_path_str};
 
 // ---------- MyApp ----------
 pub struct MyApp {
@@ -24,6 +24,7 @@ pub struct MyApp {
     popup: Popup,
     check_exit: bool,
     should_exit: bool,
+    score: MyScore,
 }
 
 impl MyApp {
@@ -59,6 +60,9 @@ impl MyApp {
             }
         });
 
+        // score sqlite
+        let score = MyScore::new().expect("Failed to open db file");
+
         Self {
             vm: FlyViewModel::new(WorldConfig::default()),
             rx,
@@ -70,6 +74,7 @@ impl MyApp {
             popup: Popup::None,
             check_exit: false,
             should_exit: false,
+            score,
         }
     }
 
@@ -109,7 +114,32 @@ impl MyApp {
                         if self.check_exit {
                             self.should_exit = true;
                         }
+                        // add player and score
+                        self.score.score = self.vm.get_game_result_message() as i32;
+                        self.score.add();
+                        self.score.name.clear();
                     }
+                });
+                ui.add_space(25.0);
+                // player name input
+                if self.popup == Popup::GameOver {
+                    ui.vertical_centered(|ui| {
+                        let data_label = ui.label(
+                            egui::RichText::new(&self.ui_config.gameover.player).monospace(),
+                        );
+                        egui::Frame::NONE.show(ui, |ui| {
+                            ui.text_edit_singleline(&mut self.score.name)
+                                .labelled_by(data_label.id)
+                        });
+                    });
+                }
+                // show players' score
+                ui.horizontal(|ui| {
+                    // print list
+                    self.score.output.clear();
+                    self.score.output.push_str(&self.ui_config.gameover.ranking);
+                    self.score.list();
+                    ui.label(egui::RichText::new(&self.score.output).monospace());
                 });
             });
     }
@@ -229,7 +259,7 @@ impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         // check exit
         if self.check_exit {
-            self.popup = Popup::PopUp;
+            self.popup = Popup::Exit;
         }
         if self.should_exit {
             ctx.send_viewport_cmd(ViewportCommand::Close);
@@ -238,7 +268,7 @@ impl eframe::App for MyApp {
         // timer tick procedure
         if let Ok(_) = self.rx.try_recv() {
             if self.vm.tick() {
-                self.popup = Popup::PopUp;
+                self.popup = Popup::GameOver;
             }
 
             // update time
@@ -280,7 +310,6 @@ impl eframe::App for MyApp {
                         });
                     };
                     // display time
-                    // draw_label(Pos2::new(50.0, 10.0), 12.0, &path, 600.0);
                     draw_label(Pos2::new(650.0, 0.0), 12.0, &self.now_time_display, 600.0);
                     // display count score
                     draw_label(Pos2::new(10.0, 0.0), 28.0, &self.dash_board_display, 300.0);
@@ -315,6 +344,7 @@ impl eframe::App for MyApp {
                     }
                 });
             });
+
         // difficulty radio
         self.show_difficulty_radio_on_canvas(ctx);
 
@@ -325,20 +355,20 @@ impl eframe::App for MyApp {
         self.draw_rustacean(ctx);
 
         // popup message box
-        if self.popup == Popup::PopUp {
-            if self.check_exit {
+        match self.popup {
+            Popup::Exit => {
                 // pop exit message
                 let title = &self.ui_config.gameover.close_title.clone();
                 let ok = &self.ui_config.gameover.close_ok.clone();
                 let message = &self.ui_config.gameover.close_bye.clone();
                 let icon = IconType::Info;
                 self.show_popup(ctx, title, &message, icon, ok);
-            } else {
+            }
+            Popup::GameOver => {
                 // report score
                 let score = self.vm.get_game_result_message();
                 let title = &self.ui_config.gameover.title.clone();
                 let ok = &self.ui_config.gameover.ok.clone();
-
                 let (message, icon) = match score {
                     0 => (self.ui_config.gameover.error.clone(), IconType::Error),
                     1 => (self.ui_config.gameover.warning.clone(), IconType::Warning),
@@ -352,6 +382,7 @@ impl eframe::App for MyApp {
                 };
                 self.show_popup(ctx, title, &message, icon, ok);
             }
+            Popup::None => {}
         }
         // draw fly hammer
         self.draw_fly_hand(ctx);

@@ -26,7 +26,8 @@ pub enum FlyMode {
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Popup {
     None,
-    PopUp,
+    GameOver,
+    Exit,
 }
 /// WorldConfig: Game world configuration parameters
 #[derive(Clone, Copy)]

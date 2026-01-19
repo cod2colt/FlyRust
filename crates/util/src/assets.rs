@@ -113,6 +113,8 @@ pub struct GameOver {
     pub close_title: String,
     pub close_ok: String,
     pub close_bye: String,
+    pub player: String,
+    pub ranking: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -159,6 +161,8 @@ impl UiConfig {
                 close_title: "ByeBye".to_string(),
                 close_ok: "ByeBye".to_string(),
                 close_bye: "Have a good day.\nSee you soon.".to_string(),
+                player: "Name".to_string(),
+                ranking: "Have Fun".to_string(),
             },
         })
     }

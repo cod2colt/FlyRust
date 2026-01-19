@@ -2,6 +2,12 @@
 
 ---
 
+### v0.0.2 (2026-01-19)
+
+#### FEATURES, ENHANCEMENTS, & BUGFIXES
+- Add player score list with sqlite
+
+--- 
 ### v0.0.1 (2026-01-01)
 
 #### INTRODUCTION
