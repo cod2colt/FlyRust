@@ -117,7 +117,6 @@ impl MyApp {
                         // add player and score
                         self.score.score = self.vm.get_game_result_message() as i32;
                         self.score.add();
-                        self.score.name.clear();
                     }
                 });
                 ui.add_space(25.0);

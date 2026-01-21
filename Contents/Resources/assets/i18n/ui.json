@@ -40,6 +40,6 @@
         "close_ok": "ByeBye",
         "close_bye": "Have a good day.\nSee you soon.",
         "player": "Your Name",
-        "ranking": "\n          Rank|Score|   Player   |      Created At   \n          ---------------------------------------------"
+        "ranking": "\n           Rank|Score|   Player   |      Created At   \n          ----------------------------------------------"
     }
 }

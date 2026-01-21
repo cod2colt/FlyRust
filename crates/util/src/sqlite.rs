@@ -32,9 +32,9 @@ impl MyScore {
 
         Ok(Self {
             conn,
-            name: "".to_string(),
+            name: "Guest".to_string(),
             score: 0,
-            output: "".to_string(),
+            output: "Hello, Fly and Rust.".to_string(),
         })
     }
 
@@ -43,7 +43,7 @@ impl MyScore {
     /// in the same directory as the application binary.
     ///
     /// # Arguments
-    /// * `db_name` - SQLite database file name (e.g. `"todo.db"`)
+    /// * `db_name` - SQLite database file name (e.g. `"flyplayer.db"`)
     ///
     /// # Returns
     /// A [`PathBuf`] pointing to:
@@ -60,7 +60,7 @@ impl MyScore {
     ///
     /// # Example
     /// ```no_run
-    /// let db_path = db_dir("todo.db");
+    /// let db_path = db_dir("flyplayer.db");
     /// let conn = rusqlite::Connection::open(db_path)?;
     /// ```
     fn db_dir(db_name: &str) -> PathBuf {
@@ -88,7 +88,7 @@ impl MyScore {
     /// - Returns an error if the database write fails
     fn init_db(conn: &Connection) -> Result<()> {
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS todo (
+            "CREATE TABLE IF NOT EXISTS flyplayer (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             score INTEGER NOT NULL,
@@ -103,7 +103,7 @@ impl MyScore {
     pub fn list(&mut self) {
         let mut stmt = match self
             .conn
-            .prepare("SELECT name, score, created_at FROM todo ORDER BY score DESC;")
+            .prepare("SELECT name, score, created_at FROM flyplayer ORDER BY score DESC;")
         {
             Ok(s) => s,
             Err(e) => return self.output.push_str(&e.to_string()),
@@ -132,7 +132,7 @@ impl MyScore {
             let ranking = rank + 1;
 
             self.output.push_str(&format!(
-                "\n          {:^4}|{:>4} | {:<10} | {:^19}",
+                "\n          {:^4}  {:>3}    {:^10}   {:^19}",
                 ranking, t.score, t.name, t.created_at
             ));
         }
@@ -150,7 +150,7 @@ impl MyScore {
 
         // INSERT
         if let Err(e) = self.conn.execute(
-            "INSERT INTO todo (name, score, created_at) VALUES (?1, ?2, ?3)",
+            "INSERT INTO flyplayer (name, score, created_at) VALUES (?1, ?2, ?3)",
             params![title, self.score, now],
         ) {
             return self.output.push_str(&format!("❗ DB error: {}\n", e));
@@ -159,10 +159,10 @@ impl MyScore {
         // keep 10 players
         let _ = self.conn.execute(
             r#"
-            DELETE FROM todo
+            DELETE FROM flyplayer
             WHERE id NOT IN (
             SELECT id
-            FROM todo
+            FROM flyplayer
             ORDER BY score DESC
             LIMIT 10
         )
